@@ -11,7 +11,7 @@ type Character @model {
 
 type Session @model {
   id: ID!
-  date: Date!
+  date: String! # YYYY-MM-DD
   hours: Int!
   character: Character!
 }
