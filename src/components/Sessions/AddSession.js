@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
+import moment from 'moment';
 
 const AddSession = (props) => {
   const [addForm, setAddForm] = useState(false);
-  const [inputDate, setInputDate] = useState(new Date().toString());
+  const [inputDate, setInputDate] = useState(moment().format('YYYY-MM-DD'));
   const [inputHours, setInputHours] = useState('1');
   const [inputDateIsValid, setInputDateIsValid] = useState(false);
   const [inputHoursIsValid, setInputHoursIsValid] = useState(false);
