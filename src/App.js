@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Characters from './components/Characters/Characters';
 import Sessions from './components/Sessions/Sessions';
+import { API } from 'aws-amplify';
 
 function App() {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
