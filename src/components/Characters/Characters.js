@@ -1,6 +1,8 @@
 import AddCharacter from './AddCharacter';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CharactersList from './CharactersList';
+import { API } from 'aws-amplify';
+import { listCharacters } from '../../graphql/queries';
 
 const Characters = (props) => {
   const [characters, setCharacters] = useState([]);
@@ -13,12 +15,23 @@ const Characters = (props) => {
     props.selectCharacter(characterId);
   };
 
+  useEffect(() => {
+    fetchCharacters();
+  }, []);
+
+  async function fetchCharacters() {
+    const apiData = await API.graphql({ query: listCharacters });
+    const charactersFromAPI = apiData.data.listCharacters.items;
+    setCharacters(charactersFromAPI);
+  }
+
   return (
     <div>
       <h1>Characters</h1>
       <AddCharacter
         onSaveCharacterName={charactersDataHandler}
         selectCharacter={onSaveIdData}
+        fetchCharacters={fetchCharacters}
       />
       <CharactersList
         characters={characters}

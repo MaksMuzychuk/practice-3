@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { API } from 'aws-amplify';
+import { createCharacter as createCharacterMutation } from '../../graphql/mutations';
 
 const AddCharacter = (props) => {
   const [addForm, setAddForm] = useState(false);
@@ -26,19 +28,39 @@ const AddCharacter = (props) => {
     setNameIsValid(inputName.trim().length > 2);
   };
 
-  const onSubmitHandler = (event) => {
+  async function onSubmitHandler(event) {
     event.preventDefault();
     const characterData = {
       name: inputName,
       server: selectServer,
       id: Math.random().toString(),
     };
+    await API.graphql({
+      query: createCharacterMutation,
+      variables: { input: characterData },
+    });
     props.onSaveCharacterName(characterData);
     props.selectCharacter(characterData.id);
+    props.fetchCharacters();
     setInputName('');
     setSelectServer('Plamegor');
     switchForm();
-  };
+  }
+
+  // async function createNote(event) {
+  //   event.preventDefault();
+  //   const form = new FormData(event.target);
+  //   const data = {
+  //     name: form.get("name"),
+  //     description: form.get("description"),
+  //   };
+  //   await API.graphql({
+  //     query: createNoteMutation,
+  //     variables: { input: data },
+  //   });
+  //   fetchNotes();
+  //   event.target.reset();
+  // }
 
   return (
     <div>
